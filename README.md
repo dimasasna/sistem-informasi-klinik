@@ -63,11 +63,11 @@ Visualisasi data berbentuk grafik sederhana untuk membantu analisis:
 ## 🚀 Cara Menjalankan Proyek
 1. Clone repositori ini:
    ```bash
-   git clone https://github.com/username/nama-repo.git
+   git clone https://github.com/dimasasna/sistem-informasi-klinik
    ```
 2. Masuk ke direktori proyek:
    ```bash
-   cd nama-repo
+   cd sistem-informasi-klinik
    ```
 3. Install dependencies:
    ```bash
