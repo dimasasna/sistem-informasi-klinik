@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Kunjungan;
+use App\Models\Payment;
 
 class KunjunganObserver
 {
@@ -11,6 +12,7 @@ class KunjunganObserver
      */
     public function creating(Kunjungan $kunjungan)
     {
+
         // Cek apakah kode_kunjungan sudah ada, jika belum generate
         if (empty($kunjungan->kode_kunjungan)) {
             $lastKunjungan = Kunjungan::orderBy('id', 'desc')->first();
@@ -18,7 +20,30 @@ class KunjunganObserver
             $kodeKunjungan = 'KJ' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
             $kunjungan->kode_kunjungan = $kodeKunjungan;
         }
+        // // Payment::create(['kunjungan_id' => $kunjungan->id]);
+        // $totalTindakan = $kunjungan->visitTindakan()->sum('total_harga');
+        // $totalObat = $kunjungan->visitObat()->sum('total_harga');
+
+        // Payment::create([
+        //     'kunjungan_id' => $kunjungan->id,
+        //     'total_tagihan' => $totalTindakan + $totalObat,
+        //     'status' => false,
+        // ]);
     }
+
+    public function created(Kunjungan $kunjungan)
+    {
+
+        $totalTindakan = $kunjungan->visitTindakan()->sum('total_harga');
+        $totalObat = $kunjungan->visitObat()->sum('total_harga');
+
+        Payment::create([
+            'kunjungan_id' => $kunjungan->id,
+            'total_tagihan' => $totalTindakan + $totalObat,
+            'status' => false,
+        ]);
+    }
+
 
     /**
      * Handle the Kunjungan "updated" event.

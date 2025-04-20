@@ -24,7 +24,11 @@ class VisitTindakanResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-hand-raised';
     protected static ?string $navigationGroup = 'Dokter';
     protected static ?string $navigationLabel = 'Tindakan Kunjungan';
-
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hanya role dokter yang bisa mengakses resource ini
+        return auth()->user()->role === 'dokter';
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -133,5 +137,25 @@ class VisitTindakanResource extends Resource
             'create' => Pages\CreateVisitTindakan::route('/create'),
             'edit' => Pages\EditVisitTindakan::route('/{record}/edit'),
         ];
+    }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'dokter';
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->role === 'dokter';
+    }
+
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'dokter';
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'dokter';
     }
 }

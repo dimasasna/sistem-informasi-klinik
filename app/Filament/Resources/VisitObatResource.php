@@ -25,6 +25,11 @@ class VisitObatResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-link-slash';
     protected static ?string $navigationGroup = 'Dokter';
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hanya role dokter yang bisa mengakses resource ini
+        return auth()->user()->role === 'dokter';
+    }
 
     public static function form(Form $form): Form
     {
@@ -171,6 +176,24 @@ class VisitObatResource extends Resource
             'create' => Pages\CreateVisitObat::route('/create'),
             'edit' => Pages\EditVisitObat::route('/{record}/edit'),
         ];
+    }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'dokter';
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->role === 'dokter';
+    }
+
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'dokter';
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'dokter';
     }
 
 }

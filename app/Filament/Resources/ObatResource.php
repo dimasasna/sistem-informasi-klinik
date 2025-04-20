@@ -22,6 +22,11 @@ class ObatResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Admin';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hanya role dokter yang bisa mengakses resource ini
+        return auth()->user()->role === 'admin';
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -114,5 +119,23 @@ class ObatResource extends Resource
             'create' => Pages\CreateObat::route('/create'),
             'edit' => Pages\EditObat::route('/{record}/edit'),
         ];
+    }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'admin';
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'admin';
     }
 }

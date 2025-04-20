@@ -25,6 +25,12 @@ class PasienResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationGroup = 'Petugas Pendafaran';
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hanya role petugas_pendaftaran yang bisa mengakses resource ini
+        return auth()->user()->role === 'petugas_pendaftaran';
+    }
+
 
     public static function form(Form $form): Form
     {
@@ -120,5 +126,23 @@ class PasienResource extends Resource
             'create' => Pages\CreatePasien::route('/create'),
             'edit' => Pages\EditPasien::route('/{record}/edit'),
         ];
+    }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'petugas_pendaftaran';
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->role === 'petugas_pendaftaran';
+    }
+
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'petugas_pendaftaran';
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'petugas_pendaftaran';
     }
 }

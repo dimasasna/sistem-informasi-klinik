@@ -23,6 +23,11 @@ class TindakanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
     protected static ?string $navigationGroup = 'Admin';
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hanya role admin yang bisa mengakses resource ini
+        return auth()->user()->role === 'admin';
+    }
 
     public static function form(Form $form): Form
     {
@@ -97,5 +102,24 @@ class TindakanResource extends Resource
             'create' => Pages\CreateTindakan::route('/create'),
             'edit' => Pages\EditTindakan::route('/{record}/edit'),
         ];
+    }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'admin';
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->role === 'admin';
     }
 }
