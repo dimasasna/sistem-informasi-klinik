@@ -79,11 +79,11 @@ Visualisasi data berbentuk grafik sederhana untuk membantu analisis:
    ```bash
    php artisan migrate --seed
    ```
-5. Login dengan akun admin
+6. Login dengan akun admin
    email: admin@example.com
    password: password123
-   
-6. Jalankan aplikasi:
+
+7. Jalankan aplikasi:
    ```bash
    php artisan serve
    ```
