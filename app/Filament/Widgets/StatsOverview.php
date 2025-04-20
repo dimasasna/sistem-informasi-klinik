@@ -18,7 +18,7 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         $totalPasien = Pasien::count();
-        $totalKunjunganHariIni = Kunjungan::whereDate('created_at', Carbon::today())->count();
+        $totalKunjunganHariIni = Kunjungan::whereDate('tanggal_kunjungan', Carbon::today())->count();
         $totalBelumLunas = Payment::where('status', false)->count();
 
         return [
